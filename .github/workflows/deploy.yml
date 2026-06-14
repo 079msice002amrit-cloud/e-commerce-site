@@ -27,14 +27,14 @@ jobs:
         docker tag ecomapp:latest ${{ secrets.DOCKERHUB_USERNAME }}/ecomapp:$BRANCH_NAME
         docker push ${{ secrets.DOCKERHUB_USERNAME }}/ecomapp:$BRANCH_NAME
 
-    # # Deploy on AWS EC2
-    # - name: Deploy on AWS EC2
-    #   uses: appleboy/ssh-action@v0.1.6
-    #   with:
-    #     host: ${{ secrets.ANSIBLE_IP }}
-    #     username: ubuntu
-    #     key: ${{ secrets.SSH_KEY }}
-    #     options: "-o StrictHostKeyChecking=no"
-    #     script: |
-    #       cd /home/ubuntu/ansible
-    #       ansible-playbook deploy.yml --become
+    # Deploy application
+    - name: Deploy application
+      uses: appleboy/ssh-action@v0.1.6
+      with:
+        host: ${{ secrets.ANSIBLE_IP }}
+        username: ubuntu
+        key: ${{ secrets.SSH_KEY }}
+        options: "-o StrictHostKeyChecking=no"
+        script: |
+          cd /home/ubuntu/playbooks
+          ansible-playbook deploy.yml
